@@ -488,15 +488,60 @@ body::before {
     transition: transform 0.1s ease;
 }
 
-/* Responsive Design */
-@media (max-width: 480px) {
+/* Enhanced Mobile Responsive Design */
+
+/* Large Mobile Devices (480px - 768px) */
+@media (max-width: 768px) and (min-width: 481px) {
+    .container {
+        padding: 20px;
+        max-width: 420px;
+    }
+    
+    .profile-card {
+        padding: 40px 30px;
+    }
+    
+    .profile-picture {
+        width: 110px;
+        height: 110px;
+    }
+    
+    .profile-name {
+        font-size: 32px;
+    }
+    
+    .profile-bio {
+        font-size: 18px;
+    }
+    
+    .link-button {
+        padding: 20px 26px;
+        font-size: 16px;
+        min-height: 60px;
+    }
+    
+    .social-icons {
+        gap: 20px;
+    }
+    
+    .social-icons a {
+        font-size: 24px;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* Standard Mobile Devices (320px - 480px) */
+@media (max-width: 480px) and (min-width: 321px) {
     .container {
         padding: 15px;
+        max-width: 100%;
     }
     
     .profile-card {
         padding: 35px 25px;
         border-radius: 16px;
+        margin: 10px;
     }
     
     .profile-picture {
@@ -505,26 +550,171 @@ body::before {
     }
     
     .profile-name {
-        font-size: 30px;
+        font-size: 28px;
+        line-height: 1.1;
     }
     
     .profile-bio {
-        font-size: 17px;
+        font-size: 16px;
+        line-height: 1.4;
     }
     
     .link-button {
+        padding: 18px 22px;
+        font-size: 15px;
+        min-height: 56px;
+        margin-bottom: 16px;
+    }
+    
+    .social-icons {
+        gap: 16px;
+        margin-bottom: 30px;
+    }
+    
+    .social-icons a {
+        font-size: 20px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Small Mobile Devices (240px - 320px) */
+@media (max-width: 320px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .profile-card {
+        padding: 25px 20px;
+        border-radius: 12px;
+        margin: 5px;
+    }
+    
+    .profile-picture {
+        width: 85px;
+        height: 85px;
+        margin-bottom: 20px;
+    }
+    
+    .profile-name {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+    
+    .profile-bio {
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+    
+    .link-button {
+        padding: 16px 18px;
+        font-size: 14px;
+        min-height: 50px;
+        margin-bottom: 14px;
+    }
+    
+    .social-icons {
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+    
+    .social-icons a {
+        font-size: 18px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .link-button {
+        min-height: 60px;
         padding: 20px 24px;
         font-size: 16px;
     }
     
+    .social-icons a {
+        min-width: 50px;
+        min-height: 50px;
+        font-size: 22px;
+    }
+    
+    .profile-picture {
+        min-width: 100px;
+        min-height: 100px;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .profile-card:hover {
+        transform: none;
+    }
+    
+    .link-button:hover {
+        transform: none;
+    }
+    
+    .social-icons a:hover {
+        transform: none;
+    }
+    
+    .profile-picture:hover {
+        transform: none;
+    }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .profile-picture img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Landscape Mobile Orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+    .profile-card {
+        padding: 20px 30px;
+    }
+    
+    .profile-section {
+        margin-bottom: 20px;
+    }
+    
+    .profile-picture {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 15px;
+    }
+    
+    .profile-name {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+    
+    .profile-bio {
+        font-size: 14px;
+        margin-bottom: 2px;
+    }
+    
+    .main-links {
+        margin-bottom: 20px;
+    }
+    
+    .link-button {
+        padding: 12px 20px;
+        margin-bottom: 12px;
+        min-height: 44px;
+    }
+    
     .social-icons {
-        gap: 18px;
+        margin-bottom: 20px;
+        gap: 14px;
     }
     
     .social-icons a {
-        font-size: 22px;
-        width: 48px;
-        height: 48px;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
     }
 }
 

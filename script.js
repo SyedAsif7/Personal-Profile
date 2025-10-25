@@ -1,10 +1,13 @@
-// Simple interactive features for the coding profile page
+// Enhanced interactive features for the coding profile page with mobile optimizations
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // Initialize mobile optimizations
+    initializeMobileOptimizations();
     
     // Create loading overlay
     createLoadingOverlay();
     
-    // Handle profile image loading
+    // Handle profile image loading with better error handling
     const profileImg = document.getElementById('profile-img');
     const placeholder = document.querySelector('.profile-placeholder');
     
@@ -35,24 +38,51 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Simple button interactions
+    // Enhanced button interactions with touch support
     const buttons = document.querySelectorAll('.link-button');
     
     buttons.forEach((button, index) => {
         // Staggered animation on load
         button.style.animationDelay = `${index * 0.1}s`;
         
+        // Touch events for mobile
+        button.addEventListener('touchstart', function(e) {
+            this.classList.add('touch-active');
+            e.preventDefault();
+        }, { passive: false });
+        
+        button.addEventListener('touchend', function(e) {
+            this.classList.remove('touch-active');
+            createTouchRipple(this, e);
+        });
+        
         button.addEventListener('click', function(e) {
             createSimpleRipple(this, e);
         });
     });
     
-    // Simple social icon interactions
+    // Enhanced social icon interactions with touch support
     const socialIcons = document.querySelectorAll('.social-icons a');
     
     socialIcons.forEach((icon, index) => {
-        // No animations or hover effects
+        // Touch events for mobile
+        icon.addEventListener('touchstart', function(e) {
+            this.classList.add('touch-active');
+            e.preventDefault();
+        }, { passive: false });
+        
+        icon.addEventListener('touchend', function(e) {
+            this.classList.remove('touch-active');
+            createIconRipple(this, e);
+        });
+        
+        icon.addEventListener('click', function(e) {
+            createIconRipple(this, e);
+        });
     });
+    
+    // Initialize PWA features
+    initializePWAFeatures();
     
     // Remove loading overlay after everything is loaded
     setTimeout(() => {
@@ -155,6 +185,222 @@ function optimizeAnimations() {
 // Initialize performance optimizations
 optimizeAnimations();
 
+// Mobile optimization functions
+function initializeMobileOptimizations() {
+    // Detect mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    if (isMobile || isTouchDevice) {
+        document.body.classList.add('mobile-device');
+        
+        // Optimize for mobile performance
+        optimizeForMobile();
+        
+        // Add mobile-specific event listeners
+        addMobileEventListeners();
+    }
+    
+    // Prevent zoom on double tap for iOS
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+}
+
+function optimizeForMobile() {
+    // Reduce animation complexity on mobile
+    const style = document.createElement('style');
+    style.textContent = `
+        .mobile-device .profile-card {
+            animation-duration: 0.6s;
+        }
+        
+        .mobile-device .profile-picture::before {
+            animation-duration: 6s;
+        }
+        
+        .mobile-device .profile-name {
+            animation-duration: 8s;
+        }
+        
+        .mobile-device .touch-active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
+        
+        .mobile-device .link-button.touch-active {
+            background: rgba(13, 17, 23, 0.9);
+            border-color: rgba(88, 166, 255, 0.4);
+        }
+        
+        .mobile-device .social-icons a.touch-active {
+            transform: scale(0.95);
+            background: rgba(13, 17, 23, 0.9);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+function addMobileEventListeners() {
+    // Prevent context menu on long press
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+    
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(() => {
+            // Recalculate layout after orientation change
+            window.dispatchEvent(new Event('resize'));
+        }, 100);
+    });
+    
+    // Handle viewport changes
+    window.addEventListener('resize', debounce(function() {
+        // Optimize layout for new viewport size
+        optimizeLayoutForViewport();
+    }, 250));
+}
+
+function optimizeLayoutForViewport() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    
+    // Adjust animations based on viewport size
+    if (vh < 500) {
+        document.body.classList.add('short-viewport');
+    } else {
+        document.body.classList.remove('short-viewport');
+    }
+    
+    if (vw < 400) {
+        document.body.classList.add('narrow-viewport');
+    } else {
+        document.body.classList.remove('narrow-viewport');
+    }
+}
+
+// Touch ripple effect for mobile
+function createTouchRipple(element, event) {
+    const ripple = document.createElement('span');
+    const rect = element.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = event.changedTouches ? event.changedTouches[0].clientX - rect.left - size / 2 : rect.width / 2 - size / 2;
+    const y = event.changedTouches ? event.changedTouches[0].clientY - rect.top - size / 2 : rect.height / 2 - size / 2;
+    
+    ripple.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        left: ${x}px;
+        top: ${y}px;
+        background: rgba(88, 166, 255, 0.3);
+        border-radius: 50%;
+        transform: scale(0);
+        animation: touchRippleExpand 0.4s ease-out;
+        pointer-events: none;
+        z-index: 1;
+    `;
+    
+    element.style.position = 'relative';
+    element.style.overflow = 'hidden';
+    element.appendChild(ripple);
+    
+    setTimeout(() => {
+        ripple.remove();
+    }, 400);
+}
+
+// PWA Features
+function initializePWAFeatures() {
+    // Check if app is running as PWA
+    if (window.matchMedia('(display-mode: standalone)').matches || 
+        window.navigator.standalone === true) {
+        document.body.classList.add('pwa-mode');
+        console.log('Running as PWA');
+    }
+    
+    // Handle PWA install prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallButton();
+    });
+    
+    // Handle PWA install
+    window.addEventListener('appinstalled', () => {
+        console.log('PWA was installed');
+        hideInstallButton();
+    });
+    
+    // Check for updates
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            window.location.reload();
+        });
+    }
+}
+
+function showInstallButton() {
+    // Create install button if needed
+    const installButton = document.createElement('button');
+    installButton.textContent = 'Install App';
+    installButton.className = 'install-button';
+    installButton.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--secondary-gradient);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 600;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: var(--shadow-medium);
+        transition: var(--transition);
+    `;
+    
+    installButton.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            deferredPrompt = null;
+        }
+    });
+    
+    document.body.appendChild(installButton);
+}
+
+function hideInstallButton() {
+    const installButton = document.querySelector('.install-button');
+    if (installButton) {
+        installButton.remove();
+    }
+}
+
+// Utility functions
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 // Add keyboard navigation support
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Tab') {
@@ -174,6 +420,41 @@ focusStyle.textContent = `
         outline: 3px solid rgba(88, 166, 255, 0.8);
         outline-offset: 3px;
         transform: scale(1.02);
+    }
+    
+    @keyframes touchRippleExpand {
+        0% {
+            transform: scale(0);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 0;
+        }
+    }
+    
+    .short-viewport .profile-card {
+        padding: 20px 25px;
+    }
+    
+    .short-viewport .profile-section {
+        margin-bottom: 15px;
+    }
+    
+    .short-viewport .main-links {
+        margin-bottom: 15px;
+    }
+    
+    .short-viewport .social-icons {
+        margin-bottom: 15px;
+    }
+    
+    .narrow-viewport .profile-name {
+        font-size: 24px;
+    }
+    
+    .narrow-viewport .profile-bio {
+        font-size: 14px;
     }
 `;
 document.head.appendChild(focusStyle);

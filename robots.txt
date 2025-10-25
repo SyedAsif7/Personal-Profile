@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://syedasif7.github.io/Personal-Profile/sitemap.xml
