@@ -397,13 +397,14 @@ body::before {
     font-weight: 600;
 }
 
-/* Social Icons */
+/* Social Icons - Enhanced for Mobile */
 .social-icons {
     display: flex;
     justify-content: center;
     gap: 22px;
     margin-bottom: 40px;
     animation: socialIconsFadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) 0.8s both;
+    flex-wrap: wrap;
 }
 
 @keyframes socialIconsFadeIn {
@@ -435,6 +436,12 @@ body::before {
     overflow: hidden;
     box-shadow: var(--shadow-light);
     animation: socialButtonEntrance 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+    /* Enhanced touch targets */
+    min-width: 55px;
+    min-height: 55px;
+    /* Better touch feedback */
+    -webkit-tap-highlight-color: rgba(88, 166, 255, 0.2);
+    tap-highlight-color: rgba(88, 166, 255, 0.2);
 }
 
 .social-icons a:nth-child(1) { animation-delay: 0.1s; }
@@ -486,6 +493,110 @@ body::before {
 .social-icons a:active {
     transform: translateY(-2px) scale(1.02);
     transition: transform 0.1s ease;
+}
+
+/* Mobile-specific social button enhancements */
+@media (max-width: 768px) {
+    .social-icons {
+        gap: 18px;
+        margin-bottom: 35px;
+        justify-content: center;
+        padding: 0 10px;
+    }
+    
+    .social-icons a {
+        /* Larger touch targets for mobile */
+        min-width: 50px;
+        min-height: 50px;
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+        
+        /* Enhanced mobile touch feedback */
+        -webkit-tap-highlight-color: rgba(88, 166, 255, 0.3);
+        tap-highlight-color: rgba(88, 166, 255, 0.3);
+        
+        /* Better mobile visual feedback */
+        border-width: 2px;
+        border-color: rgba(88, 166, 255, 0.2);
+    }
+    
+    .social-icons a:active {
+        transform: scale(0.95);
+        background: rgba(13, 17, 23, 0.9);
+        border-color: rgba(88, 166, 255, 0.5);
+        transition: all 0.1s ease;
+    }
+}
+
+@media (max-width: 480px) {
+    .social-icons {
+        gap: 16px;
+        margin-bottom: 30px;
+        padding: 0 5px;
+    }
+    
+    .social-icons a {
+        min-width: 48px;
+        min-height: 48px;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 375px) {
+    .social-icons {
+        gap: 14px;
+        margin-bottom: 25px;
+    }
+    
+    .social-icons a {
+        min-width: 46px;
+        min-height: 46px;
+        width: 46px;
+        height: 46px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 320px) {
+    .social-icons {
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .social-icons a {
+        min-width: 44px;
+        min-height: 44px;
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
+    }
+}
+
+/* Touch device optimizations for social buttons */
+@media (hover: none) and (pointer: coarse) {
+    .social-icons a {
+        /* Remove hover effects on touch devices */
+        transform: none;
+    }
+    
+    .social-icons a:hover {
+        transform: none;
+    }
+    
+    .social-icons a:hover::before {
+        transform: none;
+    }
+    
+    /* Enhanced touch feedback */
+    .social-icons a:active {
+        transform: scale(0.9);
+        background: rgba(88, 166, 255, 0.2);
+        border-color: rgba(88, 166, 255, 0.6);
+        transition: all 0.1s ease;
+    }
 }
 
 /* Enhanced Mobile Responsive Design with Improved Font Sizes */

@@ -65,19 +65,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const socialIcons = document.querySelectorAll('.social-icons a');
     
     socialIcons.forEach((icon, index) => {
-        // Touch events for mobile
+        // Enhanced touch events for mobile
         icon.addEventListener('touchstart', function(e) {
             this.classList.add('touch-active');
+            this.style.transform = 'scale(0.95)';
+            this.style.background = 'rgba(88, 166, 255, 0.2)';
             e.preventDefault();
         }, { passive: false });
         
         icon.addEventListener('touchend', function(e) {
             this.classList.remove('touch-active');
+            this.style.transform = '';
+            this.style.background = '';
             createIconRipple(this, e);
+        });
+        
+        icon.addEventListener('touchcancel', function(e) {
+            this.classList.remove('touch-active');
+            this.style.transform = '';
+            this.style.background = '';
         });
         
         icon.addEventListener('click', function(e) {
             createIconRipple(this, e);
+        });
+        
+        // Add haptic feedback for mobile devices
+        icon.addEventListener('touchend', function(e) {
+            if (navigator.vibrate) {
+                navigator.vibrate(10); // Short vibration for touch feedback
+            }
         });
     });
     
