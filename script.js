@@ -316,7 +316,7 @@ function createTouchRipple(element, event) {
     }, 400);
 }
 
-// PWA Features
+// PWA Features (Install functionality removed)
 function initializePWAFeatures() {
     // Check if app is running as PWA
     if (window.matchMedia('(display-mode: standalone)').matches || 
@@ -325,66 +325,11 @@ function initializePWAFeatures() {
         console.log('Running as PWA');
     }
     
-    // Handle PWA install prompt
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        showInstallButton();
-    });
-    
-    // Handle PWA install
-    window.addEventListener('appinstalled', () => {
-        console.log('PWA was installed');
-        hideInstallButton();
-    });
-    
     // Check for updates
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.addEventListener('controllerchange', () => {
             window.location.reload();
         });
-    }
-}
-
-function showInstallButton() {
-    // Create install button if needed
-    const installButton = document.createElement('button');
-    installButton.textContent = 'Install App';
-    installButton.className = 'install-button';
-    installButton.style.cssText = `
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: var(--secondary-gradient);
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 25px;
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 600;
-        cursor: pointer;
-        z-index: 1000;
-        box-shadow: var(--shadow-medium);
-        transition: var(--transition);
-    `;
-    
-    installButton.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User response to the install prompt: ${outcome}`);
-            deferredPrompt = null;
-        }
-    });
-    
-    document.body.appendChild(installButton);
-}
-
-function hideInstallButton() {
-    const installButton = document.querySelector('.install-button');
-    if (installButton) {
-        installButton.remove();
     }
 }
 
