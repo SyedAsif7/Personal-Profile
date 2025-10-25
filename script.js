@@ -81,8 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Initialize PWA features
-    initializePWAFeatures();
+    // Initialize basic features
+    initializeBasicFeatures();
     
     // Remove loading overlay after everything is loaded
     setTimeout(() => {
@@ -316,20 +316,13 @@ function createTouchRipple(element, event) {
     }, 400);
 }
 
-// PWA Features (Install functionality removed)
-function initializePWAFeatures() {
+// Basic Features
+function initializeBasicFeatures() {
     // Check if app is running as PWA
     if (window.matchMedia('(display-mode: standalone)').matches || 
         window.navigator.standalone === true) {
         document.body.classList.add('pwa-mode');
         console.log('Running as PWA');
-    }
-    
-    // Check for updates
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            window.location.reload();
-        });
     }
 }
 
