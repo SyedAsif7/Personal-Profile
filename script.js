@@ -38,62 +38,103 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Enhanced button interactions with touch support
+    // Enhanced button interactions with proper mobile support
     const buttons = document.querySelectorAll('.link-button');
     
     buttons.forEach((button, index) => {
         // Staggered animation on load
         button.style.animationDelay = `${index * 0.1}s`;
         
-        // Touch events for mobile
+        // Touch events for mobile visual feedback
         button.addEventListener('touchstart', function(e) {
             this.classList.add('touch-active');
-            e.preventDefault();
-        }, { passive: false });
+            this.style.transform = 'translateY(-2px) scale(0.98)';
+            this.style.background = 'rgba(13, 17, 23, 0.9)';
+            // Don't prevent default - let the link work normally
+        }, { passive: true });
         
         button.addEventListener('touchend', function(e) {
             this.classList.remove('touch-active');
+            this.style.transform = '';
+            this.style.background = '';
             createTouchRipple(this, e);
-        });
+            
+            // Add haptic feedback for mobile devices
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+        }, { passive: true });
         
+        button.addEventListener('touchcancel', function(e) {
+            this.classList.remove('touch-active');
+            this.style.transform = '';
+            this.style.background = '';
+        }, { passive: true });
+        
+        // Click event for desktop and fallback
         button.addEventListener('click', function(e) {
             createSimpleRipple(this, e);
         });
+        
+        // Mouse events for desktop hover effects
+        button.addEventListener('mouseenter', function(e) {
+            if (!this.classList.contains('touch-active')) {
+                this.style.transform = 'translateY(-4px)';
+            }
+        });
+        
+        button.addEventListener('mouseleave', function(e) {
+            if (!this.classList.contains('touch-active')) {
+                this.style.transform = '';
+            }
+        });
     });
     
-    // Enhanced social icon interactions with touch support
+    // Enhanced social icon interactions with proper mobile support
     const socialIcons = document.querySelectorAll('.social-icons a');
     
     socialIcons.forEach((icon, index) => {
-        // Enhanced touch events for mobile
+        // Touch events for mobile visual feedback
         icon.addEventListener('touchstart', function(e) {
             this.classList.add('touch-active');
             this.style.transform = 'scale(0.95)';
             this.style.background = 'rgba(88, 166, 255, 0.2)';
-            e.preventDefault();
-        }, { passive: false });
+            // Don't prevent default - let the link work normally
+        }, { passive: true });
         
         icon.addEventListener('touchend', function(e) {
             this.classList.remove('touch-active');
             this.style.transform = '';
             this.style.background = '';
             createIconRipple(this, e);
-        });
+            
+            // Add haptic feedback for mobile devices
+            if (navigator.vibrate) {
+                navigator.vibrate(10); // Short vibration for touch feedback
+            }
+        }, { passive: true });
         
         icon.addEventListener('touchcancel', function(e) {
             this.classList.remove('touch-active');
             this.style.transform = '';
             this.style.background = '';
-        });
+        }, { passive: true });
         
+        // Click event for desktop and fallback
         icon.addEventListener('click', function(e) {
             createIconRipple(this, e);
         });
         
-        // Add haptic feedback for mobile devices
-        icon.addEventListener('touchend', function(e) {
-            if (navigator.vibrate) {
-                navigator.vibrate(10); // Short vibration for touch feedback
+        // Mouse events for desktop hover effects
+        icon.addEventListener('mouseenter', function(e) {
+            if (!this.classList.contains('touch-active')) {
+                this.style.transform = 'translateY(-4px) scale(1.05)';
+            }
+        });
+        
+        icon.addEventListener('mouseleave', function(e) {
+            if (!this.classList.contains('touch-active')) {
+                this.style.transform = '';
             }
         });
     });
